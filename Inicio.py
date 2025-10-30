@@ -135,13 +135,16 @@ if client:
         col1, col2 = st.columns([1, 2])
         with col1:
             stroke_width = st.slider('Ancho de línea:', 1, 30, 5)
+            # AÑADIDO: Selector de color del trazo
+            stroke_color = st.color_picker('Color del trazo:', '#000000')
             st.info("¡Intenta dibujar una manzana, banana, naranja, etc.!")
             analyze_button = st.button("Analizar Dibujo 🍏", use_container_width=True)
 
         with col2:
             canvas_result = st_canvas(
                 stroke_width=stroke_width,
-                stroke_color="#000000", # Trazos negros
+                # ACTUALIZADO: Color del trazo dinámico
+                stroke_color=stroke_color,
                 background_color='#FFFFFF', # Fondo blanco
                 height=300,
                 width=400,
