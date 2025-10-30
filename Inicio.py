@@ -2,13 +2,11 @@ import os
 import streamlit as st
 import base64
 from openai import OpenAI
-# import openai # Eliminado ya que usamos el cliente
 from PIL import Image, ImageOps
 import numpy as np
 import pandas as pd
 from streamlit_drawable_canvas import st_canvas
 
-# --- Estilos CSS Personalizados ---
 st.markdown("""
 <style>
     /* Layout centrado */
@@ -98,7 +96,7 @@ def encode_image_to_base64(image_path):
 
 # --- Interfaz de la App ---
 st.set_page_config(page_title='Analizador de Frutas')
-st.title('Analizador de Frutas 🍓 Creador de Historias')
+st.title('Analizador de Frutas ‧₊ ᵎᵎ 🍒 ⋅ ˚✮ Crea una Historia infantil!')
 st.subheader("Dibuja una fruta en el lienzo y presiona 'Analizar'")
 
 # --- Sección 1: Clave de API ---
