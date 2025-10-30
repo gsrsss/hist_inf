@@ -96,7 +96,7 @@ def encode_image_to_base64(image_path):
 
 # --- Interfaz de la App ---
 st.set_page_config(page_title='Analizador de Frutas')
-st.title('Analizador de Frutas ‧₊ ᵎᵎ 🍒 ⋅ ˚✮ Crea una Historia infantil!')
+st.title('Analizador de frutas ‧₊ ᵎᵎ 🍒 ⋅ ˚✮ Crea una historia infantil!')
 st.subheader("Dibuja una fruta en el lienzo y presiona 'Analizar'")
 
 # --- Sección 1: Clave de API ---
