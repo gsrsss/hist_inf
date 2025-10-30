@@ -21,15 +21,6 @@ st.markdown("""
     h1, h2, h3 {
         text-align: center;
     }
-    /* Contenedor de sección (tarjeta) */
-    .section-container {
-        background-color: #ffffff;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.04);
-        border: 1px solid #e6e6e6;
-        margin-bottom: 20px;
-    }
     /* Estilo del lienzo */
     [key="canvas"] {
         border-radius: 12px;
@@ -113,7 +104,6 @@ st.subheader("Dibuja una fruta en el lienzo y presiona 'Analizar'")
 # --- Sección 1: Clave de API ---
 client = None
 with st.container():
-    st.markdown('<div class="section-container">', unsafe_allow_html=True)
     st.markdown("### 🔑 Paso 1: Ingresa tu Clave de OpenAI")
     ke = st.text_input('Tu clave aquí:', type="password", label_visibility="collapsed", placeholder="sk-...")
     
@@ -125,13 +115,12 @@ with st.container():
         # CORRECCIÓN: Inicializar el cliente aquí
         client = OpenAI(api_key=api_key)
         st.success("¡Clave de API cargada! 🍎")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.divider()
 
 
 # --- Sección 2: Lienzo de Dibujo (solo si hay clave) ---
 if client:
     with st.container():
-        st.markdown('<div class="section-container">', unsafe_allow_html=True)
         st.markdown("### 🎨 Paso 2: Dibuja una Fruta")
 
         # --- CAMBIO: Controles encima del lienzo ---
@@ -157,7 +146,6 @@ if client:
         st.write("") # Espacio
         analyze_button = st.button("Analizar Dibujo 🍏", use_container_width=True)
 
-        st.markdown('</div>', unsafe_allow_html=True)
 
     # --- Lógica de Análisis ---
     if canvas_result.image_data is not None and analyze_button:
@@ -217,8 +205,8 @@ if client:
 
     # --- Sección 3: Crear Historia (si el análisis está hecho) ---
     if st.session_state.analysis_done:
+        st.divider()
         with st.container():
-            st.markdown('<div class="section-container">', unsafe_allow_html=True)
             st.markdown("### 📚 Paso 3: ¿Creamos una historia?")
             st.write(f"¡Genial! Ahora podemos crear una historia sobre tu dibujo.")
             
@@ -239,9 +227,7 @@ if client:
                     story_content = story_response.choices[0].message.content
                     st.markdown(f"<div class='story-box'>{story_content}</div>", unsafe_allow_html=True)
 
-            st.markdown('</div>', unsafe_allow_html=True)
 
 # --- "Acerca de" (movido del sidebar) ---
 with st.expander("ℹ️ Acerca de esta App"):
     st.write("En esta aplicación usamos IA (GPT-4o-mini) para interpretar tus dibujos de frutas y convertirlos en descripciones e historias.")
-
