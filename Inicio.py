@@ -34,6 +34,8 @@ st.markdown("""
     [key="canvas"] {
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: block;
+        margin: 0 auto; /* Centrar el lienzo si es más pequeño que el contenedor */
     }
     /* Botón principal (verde fruta) */
     .stButton>button:first-of-type {
@@ -132,25 +134,29 @@ if client:
         st.markdown('<div class="section-container">', unsafe_allow_html=True)
         st.markdown("### 🎨 Paso 2: Dibuja una Fruta")
 
-        col1, col2 = st.columns([1, 2])
+        # --- CAMBIO: Controles encima del lienzo ---
+        col1, col2 = st.columns(2)
         with col1:
             stroke_width = st.slider('Ancho de línea:', 1, 30, 5)
-            # AÑADIDO: Selector de color del trazo
-            stroke_color = st.color_picker('Color del trazo:', '#000000')
-            st.info("¡Intenta dibujar una manzana, banana, naranja, etc.!")
-            analyze_button = st.button("Analizar Dibujo 🍏", use_container_width=True)
-
         with col2:
-            canvas_result = st_canvas(
-                stroke_width=stroke_width,
-                # ACTUALIZADO: Color del trazo dinámico
-                stroke_color=stroke_color,
-                background_color='#FFFFFF', # Fondo blanco
-                height=300,
-                width=400,
-                drawing_mode="freedraw",
-                key="canvas",
-            )
+            stroke_color = st.color_picker('Color del trazo:', '#000000')
+        
+        st.info("¡Intenta dibujar una manzana, banana, naranja, etc.!")
+
+        # --- CAMBIO: Lienzo más grande ---
+        canvas_result = st_canvas(
+            stroke_width=stroke_width,
+            stroke_color=stroke_color,
+            background_color='#FFFFFF', # Fondo blanco
+            height=400,  # <-- Más alto
+            width=600,   # <-- Más ancho
+            drawing_mode="freedraw",
+            key="canvas",
+        )
+        
+        st.write("") # Espacio
+        analyze_button = st.button("Analizar Dibujo 🍏", use_container_width=True)
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     # --- Lógica de Análisis ---
@@ -159,9 +165,13 @@ if client:
             # Guardar y codificar la imagen
             input_numpy_array = np.array(canvas_result.image_data)
             input_image = Image.fromarray(input_numpy_array.astype('uint8')).convert('RGBA')
-            input_image.save('img.png')
             
-            base64_image = encode_image_to_base64("img.png")
+            # Asegurar que el directorio 'prediction' existe
+            os.makedirs("prediction", exist_ok=True)
+            image_path = "prediction/img.png"
+            input_image.save(image_path)
+            
+            base64_image = encode_image_to_base64(image_path)
             st.session_state.base64_image = base64_image
                 
             # CAMBIO DE TEMA: Prompt de Fruta
@@ -234,3 +244,4 @@ if client:
 # --- "Acerca de" (movido del sidebar) ---
 with st.expander("ℹ️ Acerca de esta App"):
     st.write("En esta aplicación usamos IA (GPT-4o-mini) para interpretar tus dibujos de frutas y convertirlos en descripciones e historias.")
+
